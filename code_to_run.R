@@ -5,7 +5,7 @@
 # install libraries, if not installed
 
 #remotes::install_github("OHDSI/DatabaseConnector")
-
+#detach("package:Alathea", unload = TRUE)
 #remotes::install_github("OHDSI/Alathea")
 
 library (dplyr)
@@ -18,15 +18,16 @@ library(Alathea)
 
 #set the BaseUrl of your Atlas instance
 #baseUrl <- "https://epi.jnj.com:8443/WebAPI/"
+baseUrl <- keyring::key_get("JnJAtlasWebAPI", "baseUrl")
 
-baseUrl <- "https://atlas-demo.ohdsi.org/WebAPI/"
+#baseUrl <- "https://atlas-demo.ohdsi.org/WebAPI/"
 
 
 # if security is enabled authorize use of the webapi
 #ohdsi demo atlas doesn't have security enabled, so you can skip this step, but for your instance you might need to authorize, see the example below for Windows authentication, for other types of authentication please refer to the ROhdsiWebApi documentation https://ohdsi.github.io/ROhdsiWebApi/articles/ROhdsiWebApi.html#authentication
-#ROhdsiWebApi::authorizeWebApi(
-#  baseUrl = baseUrl,
-#  authMethod = "windows")
+ROhdsiWebApi::authorizeWebApi(
+  baseUrl = baseUrl,
+  authMethod = "windows")
 
 
 # specify cohorts you want to run the comparison for
@@ -34,16 +35,19 @@ baseUrl <- "https://atlas-demo.ohdsi.org/WebAPI/"
 #                      escape_double = FALSE, trim_ws = TRUE)
 #cohorts <-c( Cohorts$cohortId)
 
-cohorts <-c(1796862) # phenotyping workshop
+cohorts <-c(10617, # RA cohort
+14514, #Serious infection, among infant
+16948 # Neutropenia cohort
+) 
 
 #set name which will be used for the output
-projName='WorkShopAlathea'
+projName='WorkShopAlathea_v2'
 
 #excluded nodes is a text string with nodes you want to exclude from the analysis, it's set to 0 by default
 # for example now some CPT4 and HCPCS are mapped to Visit concepts and we didn't implement this in the ETL,
 #so we don't want these in the analysis (note, the tool doesn't look at the actual CDM, but on the mappings in the vocabulary)
 #this way, the excludedNodes are defined in this way:
-excludedVisitNodes <- "9202, 2514435,9203,2514436,2514437,2514434,2514433,9201"
+#excludedVisitNodes <- "9202, 2514435,9203,2514436,2514437,2514434,2514433,9201"
 
 #you can restrict the output by using specific source vocabularies (only those that exist in your data as source concepts)
 includedSourceVocabs <- "'ICD10', 'ICD10CM', 'CPT4', 'HCPCS', 'NDC', 'ICD9CM', 'ICD9Proc', 'ICD10PCS', 'ICDO3', 'JMDC', 'LOINC'"
@@ -90,7 +94,7 @@ resultToExcel(connectionDetailsVocab = connectionDetails,
               Concepts_in_cohortSet = Concepts_in_cohortSet,
               newVocabSchema = newVocabSchema,
               oldVocabSchema = oldVocabSchema,
-              excludedNodes = excludedVisitNodes,
+            #  excludedNodes = excludedVisitNodes,
               resultSchema = resultSchema,
               scratchSchema= scratchSchema,
               includedSourceVocabs = includedSourceVocabs,
