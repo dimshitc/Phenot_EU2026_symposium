@@ -10,7 +10,7 @@ library (openxlsx)
 #set parameters for the run
 ###########################
 #set name which will be used for the output
-projName <- 'PhenLibraryALATHEAWorkshop'
+projName <- 'PhenLibraryALATHEAWorkshop196'
 
 excludedVisitNodes <- "9202, 2514435,9203,2514436,2514437,2514434,2514433,9201"
 includedSourceVocabs <- "'ICD10', 'ICD10CM', 'CPT4', 'HCPCS', 'NDC', 'ICD9CM', 'ICD9Proc', 'ICD10PCS', 'ICDO3', 'JMDC'"
@@ -32,13 +32,13 @@ scratchSchema <-'scratch.scratch_ddymshyt'
 
 #get all concept sets
 phenotypeLog <- getPhenotypeLog()
-phenotypeLog <- phenotypeLog %>% filter(cohortId == 858) # phenotyping workshop cohort ID - RA
+phenotypeLog <- phenotypeLog %>% filter(cohortId == 196) # phenotyping workshop cohort ID - RA
 allConceptSets <- getPlConceptDefinitionSet(cohortIds = phenotypeLog$cohortId)
 
 #not needed for this run
 #A tibble with the cohort ID, name, sql, and JSON for the provided cohort IDs. 
 #Can be used by the CohortGenerator package.
-cohortDefinition<-getPlCohortDefinitionSet(858)
+cohortDefinition<-getPlCohortDefinitionSet(196)
 
 #initial table
 Concepts_in_cohort <- tibble(

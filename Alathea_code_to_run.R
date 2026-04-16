@@ -5,8 +5,8 @@
 # install libraries, if not installed
 
 #remotes::install_github("OHDSI/DatabaseConnector")
-#detach("package:Alathea", unload = TRUE)
-#remotes::install_github("OHDSI/Alathea")
+detach("package:Alathea", unload = TRUE)
+remotes::install_github("OHDSI/Alathea")
 
 library (dplyr)
 library (openxlsx)
@@ -41,13 +41,13 @@ cohorts <-c(10617, # RA cohort
 ) 
 
 #set name which will be used for the output
-projName='WorkShopAlathea_v2'
+projName='RA_SerInf_Neutropenia_JNJ_cohort'
 
 #excluded nodes is a text string with nodes you want to exclude from the analysis, it's set to 0 by default
 # for example now some CPT4 and HCPCS are mapped to Visit concepts and we didn't implement this in the ETL,
 #so we don't want these in the analysis (note, the tool doesn't look at the actual CDM, but on the mappings in the vocabulary)
 #this way, the excludedNodes are defined in this way:
-#excludedVisitNodes <- "9202, 2514435,9203,2514436,2514437,2514434,2514433,9201"
+excludedVisitNodes <- "9202, 2514435,9203,2514436,2514437,2514434,2514433,9201"
 
 #you can restrict the output by using specific source vocabularies (only those that exist in your data as source concepts)
 includedSourceVocabs <- "'ICD10', 'ICD10CM', 'CPT4', 'HCPCS', 'NDC', 'ICD9CM', 'ICD9Proc', 'ICD10PCS', 'ICDO3', 'JMDC', 'LOINC'"
@@ -94,7 +94,7 @@ resultToExcel(connectionDetailsVocab = connectionDetails,
               Concepts_in_cohortSet = Concepts_in_cohortSet,
               newVocabSchema = newVocabSchema,
               oldVocabSchema = oldVocabSchema,
-            #  excludedNodes = excludedVisitNodes,
+              excludedNodes = excludedVisitNodes,
               resultSchema = resultSchema,
               scratchSchema= scratchSchema,
               includedSourceVocabs = includedSourceVocabs,
