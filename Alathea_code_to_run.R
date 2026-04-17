@@ -17,9 +17,9 @@ library(Alathea)
 
 
 #set the BaseUrl of your Atlas instance
-#baseUrl <- "https://epi.jnj.com:8443/WebAPI/"
 baseUrl <- keyring::key_get("JnJAtlasWebAPI", "baseUrl")
 
+#you can play with the publick atlas
 #baseUrl <- "https://atlas-demo.ohdsi.org/WebAPI/"
 
 
